@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:platform/platform.dart';
+import 'package:diacritic/diacritic.dart';
 
 part 'constants.dart';
 
@@ -314,7 +315,7 @@ class Telephony {
     }
     final Map<String, dynamic> args = {
       "address": to,
-      "message_body": message,
+      "message_body": removeDiacritics(message),
       "listen_status": listenStatus
     };
     final String method = isMultipart ? SEND_MULTIPART_SMS : SEND_SMS;
@@ -633,7 +634,8 @@ class SmsMessage {
           break;
         case _SmsProjections.TYPE:
           var smsTypeIndex = int.tryParse(value);
-          this.type = smsTypeIndex != null ? SmsType.values[smsTypeIndex] : null;
+          this.type =
+              smsTypeIndex != null ? SmsType.values[smsTypeIndex] : null;
           break;
       }
     }
